@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+enum Status {
+    case online
+    case busy
+    case offline
+}
+
 struct CardView: View {
     var body: some View {
 
@@ -20,9 +26,55 @@ struct CardView: View {
                 print("Register")
             }
         }
+
+        HStack {
+            StatusBadge(status: .online)
+
+            StatusBadge(status: .busy)
+
+            StatusBadge(status: .offline)
+        }
     }
 }
 
+struct StatusBadge: View {
+
+    let status: Status
+
+    var body: some View {
+        content
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(backgroundColor.opacity(0.15))
+            .clipShape(Capsule())
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch status {
+
+        case .online:
+            Label("Online", systemImage: "checkmark.circle.fill")
+                .foregroundStyle(.green)
+
+        case .busy:
+            Label("Busy", systemImage: "minus.circle.fill")
+                .foregroundStyle(.orange)
+
+        case .offline:
+            Label("Offline", systemImage: "xmark.circle.fill")
+                .foregroundStyle(.gray)
+        }
+    }
+
+    private var backgroundColor: Color {
+        switch status {
+        case .online: .green
+        case .busy: .orange
+        case .offline: .gray
+        }
+    }
+}
 
 struct Card<Content: View>: View {
 
