@@ -7,91 +7,212 @@
 
 import SwiftUI
 
-struct ProfileView: View {
+struct ProfileSettingsView: View {
 
-    @State var profileName: String = "Vlad Shimchenko"
-    @State var password: String = ""
-    @State var isDark: Bool = false
+    @State private var name = "Vlad Petrov"
+    @State private var password = "12345678"
+    @State private var isDarkMode = false
+
+    @State private var fontSize: Double = 18
+    @State private var notificationsCount = 5
+
+    @State private var selectedLanguage = "RU"
+    @State private var selectedMenuLanguage = "RU"
+
+    private let languages = ["RU", "EN", "DE"]
 
     var body: some View {
-        ZStack {
+        NavigationStack {
+            ScrollView {
 
-            VStack {
-                VStack {
-                    Image(systemName: "figure.walk")
-                        .resizable()
-                        .frame(width: 100, height: 100)
-                        .background(Color.blue.opacity(0.5))
-                        .cornerRadius(50)
+                VStack(spacing: 20) {
 
-                    Text(profileName)
-                        .font(.title)
-                        .fontWeight(.bold)
+                    // MARK: Profile
 
-                    Text("iOS Developer 4 года опыта")
-                        .font(.title2)
-                        .fontWeight(.medium)
+                    VStack(spacing: 12) {
 
-                    Text("~~ в поиске работы ~~")
+                        Image(systemName: "person.crop.circle.fill")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .foregroundStyle(.blue)
 
-                    Divider()
+                        Text(name)
+                            .font(.system(size: 20, weight: .bold))
 
-                    Link(destination: URL(string: "https://github.com/MrCronkite")!) {
-                        Text("🔗 GitHub Profile")
-                            .font(.system(size: 16))
-                            .fontWeight(.medium)
-                            .foregroundColor(.blue)
+                        Text("**iOS Developer** 4 года опыта")
+
+                        Text("в поиске работы")
+                            .strikethrough()
+
+                        Link(
+                            "🔗 GitHub Profile",
+                            destination: URL(
+                                string: "https://github.com/MrCronkite"
+                            )!
+                        )
                     }
-                }
-                .frame(maxWidth: .infinity, alignment: .topLeading)
-                .padding()
-                .background { Color.pink.opacity(0.3) }
-                .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(.regularMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
 
-                VStack {
-                    HStack {
-                        Text("Имя:")
-                            .font(.title3)
+                    // MARK: Settings
 
-                        TextField("Введите текст", text: $profileName)
+                    VStack(alignment: .leading, spacing: 0) {
+
+                        settingsRow {
+                            Text("Имя")
+
+                            TextField(
+                                "Введите имя",
+                                text: $name
+                            )
+                            .multilineTextAlignment(.trailing)
+                        }
+
+                        Divider()
+
+                        settingsRow {
+                            Text("Пароль")
+
+                            SecureField(
+                                "Введите пароль",
+                                text: $password
+                            )
+                            .multilineTextAlignment(.trailing)
+                        }
+
+                        Divider()
+
+                        settingsRow {
+                            Text("Dark Mode")
+
+                            Toggle("", isOn: $isDarkMode)
+                        }
+
+                        Divider()
+
+                        VStack(alignment: .leading, spacing: 8) {
+
+                            HStack {
+                                Text("Шрифт")
+
+                                Spacer()
+
+                                Text("\(Int(fontSize))")
+                            }
+
+                            Slider(
+                                value: $fontSize,
+                                in: 12...30
+                            )
+                        }
+                        .padding()
+
+                        Divider()
+
+                        Stepper(
+                            "Уведомления: \(notificationsCount)",
+                            value: $notificationsCount,
+                            in: 0...99
+                        )
+                        .padding()
+
+                        Divider()
+
+                        VStack(alignment: .leading, spacing: 8) {
+
+                            Text("Язык")
+
+                            Picker(
+                                "Язык",
+                                selection: $selectedLanguage
+                            ) {
+                                ForEach(languages, id: \.self) {
+                                    Text($0)
+                                }
+                            }
+                            .pickerStyle(.segmented)
+                        }
+                        .padding()
+
+                        Divider()
+
+                        settingsRow {
+                            Text("Язык")
+
+                            Picker(
+                                "Language",
+                                selection: $selectedMenuLanguage
+                            ) {
+                                ForEach(languages, id: \.self) {
+                                    Text($0)
+                                }
+                            }
+                            .pickerStyle(.menu)
+                        }
+
+                    }
+                    .background(.regularMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                    // MARK: Actions
+
+                    VStack(spacing: 12) {
+
+                        Button("Сохранить") {
+                            print("Save")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .frame(maxWidth: .infinity)
+
+                        Button {
+
+                        } label: {
+                            Label(
+                                "Поделиться",
+                                systemImage: "square.and.arrow.up"
+                            )
                             .frame(maxWidth: .infinity)
-                    }
-                    .padding()
+                        }
+                        .buttonStyle(.bordered)
 
-                    Divider()
-
-                    HStack {
-                        Text("Пароль")
-                            .font(.title3)
-
-                        SecureField("Введите пароль", text: $password)
-                    }
-                    .padding()
-
-                    Divider()
-
-                    HStack {
-                        Text("Dark mode")
-                            .font(.title3)
-
-                        Toggle(isOn: $isDark) {
-
+                        Button(
+                            role: .destructive
+                        ) {
+                            print("Delete")
+                        } label: {
+                            Text("Удалить аккаунт")
+                                .frame(maxWidth: .infinity)
                         }
                     }
                     .padding()
-
+                    .background(.regularMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
-                .frame(maxWidth: .infinity)
                 .padding()
-                .background { Color.pink.opacity(0.3) }
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-
             }
+            .navigationTitle("Profile & Settings")
+            .preferredColorScheme(
+                isDarkMode ? .dark : .light
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func settingsRow<Content: View>(
+        @ViewBuilder content: () -> Content
+    ) -> some View {
+        HStack {
+            content()
         }
         .padding()
     }
 }
 
 #Preview {
-    ProfileView()
+    ProfileSettingsView()
 }
+
