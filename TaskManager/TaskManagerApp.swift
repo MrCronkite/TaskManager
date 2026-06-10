@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct TaskManagerApp: App {
+    let vm = ShopViewModel()
     var body: some Scene {
         WindowGroup {
-            ContentView()
+           ProductListView()
+                .environmentObject(vm)
         }
     }
 }
