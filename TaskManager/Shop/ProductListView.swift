@@ -19,7 +19,7 @@ struct ProductListView: View {
             }
             .navigationTitle("Products")
             .toolbar {
-              CartBadge()
+                CartBadge()
             }
         }
     }

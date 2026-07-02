@@ -12,14 +12,15 @@ struct Product: Identifiable {
     let id = UUID()
     let name: String
     let price: Double
+    let isImportant: Bool
 }
 
 
 final class ShopViewModel: ObservableObject {
 
     @Published var products: [Product] = [
-        .init(name: "Moloko", price: 123.0),
-        .init(name: "Beer", price: 80.2)
+        .init(name: "Moloko", price: 123.0, isImportant: true),
+        .init(name: "Beer", price: 80.2, isImportant: false)
     ]
 
     @Published var cartCount: Int = 0

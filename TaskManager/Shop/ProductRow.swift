@@ -20,7 +20,6 @@ struct ProductRow: View {
     var body: some View {
 
         VStack(alignment: .leading) {
-
             Text(product.name)
 
             Text("$\(product.price)")
@@ -29,8 +28,8 @@ struct ProductRow: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             colorScheme == .dark
-            ? Color.gray.opacity(0.3)
-            : Color.white
+            ? product.isImportant ? .red.opacity(0.3) : Color.gray.opacity(0.3)
+            : product.isImportant ? .red.opacity(0.3) : Color.white
         )
         .clipShape(
             RoundedRectangle(cornerRadius: 12)
