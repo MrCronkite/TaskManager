@@ -22,7 +22,7 @@ struct ProductRow: View {
         VStack(alignment: .leading) {
             Text(product.name)
 
-            Text("$\(product.price)")
+            Text(product.price, format: .currency(code: "USD"))
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)

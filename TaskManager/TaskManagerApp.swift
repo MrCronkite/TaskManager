@@ -6,16 +6,20 @@
 //
 
 import SwiftUI
+import Combine
 
 @main
 struct TaskManagerApp: App {
 
-    let vm = ShopViewModel()
+    @StateObject
+    private var vm = ShopViewModel()
 
     var body: some Scene {
         WindowGroup {
-           ProductListView()
+            ProductListView()
                 .environmentObject(vm)
         }
     }
 }
+
+

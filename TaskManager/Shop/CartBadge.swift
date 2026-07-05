@@ -14,13 +14,20 @@ struct CartBadge: View {
 
     var body: some View {
 
-        ZStack {
+        ZStack(alignment: .topTrailing) {
+            Image(systemName: "cart.fill")
+                .font(.caption2)
+                .foregroundStyle(.primary)
 
-            Circle()
-                .frame(width: 30, height: 30)
-
-            Text("\(viewModel.cartCount)")
-                .foregroundStyle(.white)
+            if viewModel.cartCount > 0 {
+                Text("\(viewModel.cartCount)")
+                    .font(.caption2).bold()
+                    .foregroundStyle(.white)
+                    .padding(4)
+                    .background(.red)
+                    .clipShape(Circle())
+                    .offset(x: 8, y: -8)
+            }
         }
     }
 }
