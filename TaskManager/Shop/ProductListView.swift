@@ -6,16 +6,21 @@
 //
 
 import SwiftUI
+import Observation
 
 struct ProductListView: View {
 
-    @EnvironmentObject
-    private var vm: ShopViewModel
+    @Environment(ShopViewModel.self)
+    private var vm
 
     var body: some View {
+        @Bindable var vm = vm
+
         NavigationStack {
-            List(vm.products) {
-                ProductRow(product: $0)
+            List($vm.products) { $product in
+                ProductRow(
+                    product: $product
+                )
             }
             .navigationTitle("Products")
             .toolbar {

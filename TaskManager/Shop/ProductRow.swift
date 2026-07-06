@@ -6,13 +6,14 @@
 //
 
 import SwiftUI
+import Observation
 
 struct ProductRow: View {
 
-    let product: Product
+    @Binding var product: Product
 
-    @EnvironmentObject
-    private var viewModel: ShopViewModel
+    @Environment(ShopViewModel.self)
+    private var vm
 
     @Environment(\.colorScheme)
     private var colorScheme
@@ -23,6 +24,12 @@ struct ProductRow: View {
             Text(product.name)
 
             Text(product.price, format: .currency(code: "USD"))
+
+            Stepper(
+                "Quantity \(product.quantity)",
+                value: $product.quantity,
+                in: 0...99
+            )
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -37,7 +44,7 @@ struct ProductRow: View {
         .overlay(alignment: .trailing) {
 
             Button("В корзину") {
-                viewModel.addToCart(product)
+                vm.addToCart(product)
             }
             .padding()
         }

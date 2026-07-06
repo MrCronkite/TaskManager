@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import Observation
 
 struct CartBadge: View {
 
-    @EnvironmentObject
-    private var viewModel: ShopViewModel
+    @Environment(ShopViewModel.self)
+    private var vm
 
     var body: some View {
 
@@ -19,8 +20,8 @@ struct CartBadge: View {
                 .font(.caption2)
                 .foregroundStyle(.primary)
 
-            if viewModel.cartCount > 0 {
-                Text("\(viewModel.cartCount)")
+            if vm.cartCount > 0 {
+                Text("\(vm.cartCount)")
                     .font(.caption2).bold()
                     .foregroundStyle(.white)
                     .padding(4)

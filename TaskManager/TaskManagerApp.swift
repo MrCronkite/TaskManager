@@ -11,13 +11,12 @@ import Combine
 @main
 struct TaskManagerApp: App {
 
-    @StateObject
-    private var vm = ShopViewModel()
+    @State private var vm = ShopViewModel()
 
     var body: some Scene {
         WindowGroup {
             ProductListView()
-                .environmentObject(vm)
+                .environment(vm)
         }
     }
 }
