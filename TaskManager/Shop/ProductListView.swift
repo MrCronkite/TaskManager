@@ -17,15 +17,24 @@ struct ProductListView: View {
         @Bindable var vm = vm
 
         NavigationStack {
-            List($vm.products) { $product in
-                ProductRow(
-                    product: $product
-                )
+            Group {
+                if vm.isLoading {
+                    ProgressView("Loading")
+                } else {
+                    List($vm.products) { $product in
+                        ProductRow(
+                            product: $product
+                        )
+                    }
+                }
             }
             .navigationTitle("Products")
             .toolbar {
                 CartBadge()
             }
+        }
+        .task {
+            await vm.loadProducts()
         }
     }
 }

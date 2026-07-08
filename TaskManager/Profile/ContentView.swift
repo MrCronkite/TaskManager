@@ -34,7 +34,7 @@ enum TaskError: Error {
     case notFound
 }
 
-struct Task: Identifiable, Hashable, Comparable {
+struct TaskInter: Identifiable, Hashable, Comparable {
 
     let id: UUID
 
@@ -44,7 +44,7 @@ struct Task: Identifiable, Hashable, Comparable {
     let priority: Priority
     let isDone: Bool
 
-    static func < (lhs: Task, rhs: Task) -> Bool {
+    static func < (lhs: TaskInter, rhs: TaskInter) -> Bool {
         lhs.priority < rhs.priority
     }
 
@@ -76,7 +76,7 @@ struct NonEmpty: Hashable {
 
 struct TaskManager {
 
-    var tasks: Set<Task> = [
+    var tasks: Set<TaskInter> = [
         .init(id: UUID(), name: "Погулять с собакой", priority: .high, isDone: false),
         .init(id: UUID(), name: "Купить молоко", priority: .high, isDone: true),
         .init(id: UUID(), name: "", priority: .medium, isDone: true),
@@ -85,7 +85,7 @@ struct TaskManager {
 
     typealias TaskResult = Result<Void, TaskError>
 
-    mutating func add(_ task: Task) -> TaskResult {
+    mutating func add(_ task: TaskInter) -> TaskResult {
         guard !tasks.contains(task) else {
             return .failure(.alreadyExists)
         }
@@ -104,7 +104,7 @@ struct TaskManager {
         return .success(())
     }
 
-    func tasks(sortedBy keyPath: KeyPath<Task, some Comparable>) -> [Task] {
+    func tasks(sortedBy keyPath: KeyPath<TaskInter, some Comparable>) -> [TaskInter] {
         tasks.sorted {
             $0[keyPath: keyPath] < $1[keyPath: keyPath]
         }
@@ -125,7 +125,7 @@ struct ContentView: View {
         }
 
         Button("Add Task") {
-            let task = Task(
+            let task = TaskInter(
                 id: UUID(),
                 name: "Новая задача",
                 priority: .medium,
@@ -148,7 +148,7 @@ struct ContentView: View {
 
 struct TaskRow: View {
 
-    let task: Task
+    let task: TaskInter
 
     var body: some View {
         HStack {

@@ -30,5 +30,8 @@ struct CartBadge: View {
                     .offset(x: 8, y: -8)
             }
         }
+        .onChange(of: vm.cartCount) { oldValue, newValue in
+            print(oldValue, newValue)
+        }
     }
 }

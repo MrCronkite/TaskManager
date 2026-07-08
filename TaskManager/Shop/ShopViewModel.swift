@@ -21,17 +21,28 @@ struct Product: Identifiable {
 @Observable
 final class ShopViewModel {
 
-    var products: [Product] = [
-        .init(name: "Moloko", price: 123.0, isImportant: true, quantity: 0),
-        .init(name: "Beer", price: 80.2, isImportant: false, quantity: 0)
-    ]
+    var products: [Product] = []
 
     var cartCount: Int = 0
+    var isLoading = false
 
     func addToCart(_ product: Product) {
         
         cartCount += product.quantity > 0
         ? product.quantity
         : 1
+    }
+
+    func loadProducts() async {
+        isLoading = true
+
+        try? await Task.sleep(for: .seconds(3))
+
+        products = [
+            .init(name: "Moloko", price: 123.0, isImportant: true, quantity: 0),
+            .init(name: "Beer", price: 80.2, isImportant: false, quantity: 0)
+        ]
+
+        isLoading = false
     }
 }

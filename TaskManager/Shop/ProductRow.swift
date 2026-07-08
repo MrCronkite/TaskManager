@@ -42,7 +42,7 @@ struct ProductRow: View {
             RoundedRectangle(cornerRadius: 12)
         )
         .overlay(alignment: .trailing) {
-
+            
             Button("В корзину") {
                 vm.addToCart(product)
             }
