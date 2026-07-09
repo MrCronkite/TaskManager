@@ -8,7 +8,7 @@
 import SwiftUI
 import Observation
 
-struct ProductRow: View {
+struct ProductRow: View, Equatable {
 
     @Binding var product: Product
 
@@ -17,6 +17,10 @@ struct ProductRow: View {
 
     @Environment(\.colorScheme)
     private var colorScheme
+
+    static func == (lhs: ProductRow, rhs: ProductRow) -> Bool {
+        lhs.product.id == rhs.product.id
+    }
 
     var body: some View {
 

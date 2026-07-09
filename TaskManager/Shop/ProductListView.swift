@@ -13,6 +13,9 @@ struct ProductListView: View {
     @Environment(ShopViewModel.self)
     private var vm
 
+    @State private var searchQuery = ""
+    @State private var filteredProducts: [Product] = []
+
     var body: some View {
         @Bindable var vm = vm
 
@@ -21,20 +24,27 @@ struct ProductListView: View {
                 if vm.isLoading {
                     ProgressView("Loading")
                 } else {
-                    List($vm.products) { $product in
-                        ProductRow(
-                            product: $product
-                        )
+                    List($filteredProducts) { $product in
+                        ProductRow(product: $product)
+                            .equatable()
                     }
                 }
             }
             .navigationTitle("Products")
+            .searchable(text: $searchQuery, prompt: "Search products")
             .toolbar {
                 CartBadge()
             }
         }
+        .task(id: searchQuery) {
+            filteredProducts = await vm.filteredProduct(searchQuery: searchQuery)
+        }
         .task {
             await vm.loadProducts()
+            filteredProducts = vm.products
+        }
+        .onDisappear {
+            print("left shop")
         }
     }
 }
